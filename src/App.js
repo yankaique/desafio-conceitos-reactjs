@@ -5,25 +5,18 @@ import "./styles.css";
 function App() {
 
   const [repositories, setRepositories] = useState([]);
-  const [randomTecnology, setRandomTecnology] = useState('react-native');
+  const [addicted, setAddicted] = useState(1);
 
   useEffect(()=>{
     api.get('repositories').then(response => {setRepositories(response.data)})
   },[])
 
   async function handleAddRepository() {
-
-    if(randomTecnology=='react'){
-      setRandomTecnology('node');
-    }else if(randomTecnology == 'node'){
-      setRandomTecnology('react-native');
-    }else{
-      setRandomTecnology('react');
-    }
-
-    const response = await api.post('repositories',{title:`Uma aplicação feita com ${randomTecnology}`,
+    const response = await api.post('repositories',{title:`Respositório ${addicted}`,
     url:"https://github.com/yankaique",
-    techs:randomTecnology})
+    techs:'React'})
+
+    setAddicted(addicted+1);
 
     const newData = response.data;
 
@@ -31,7 +24,6 @@ function App() {
   }
 
   async function handleRemoveRepository(id) {
-
     await api.delete(`repositories/${id}`);
     
     const findIndex = repositories.findIndex(repositorie => repositorie.id === id);
